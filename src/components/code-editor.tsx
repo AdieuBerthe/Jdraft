@@ -23,7 +23,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({onEditorChange, initialValue}) =
     }
 
     const onFormatClick = () => {
-        const unformatted = editorRef.current.getModel().getValue();
+        const unformatted = editorRef.current.getValue();
         const formatted = prettier.format(unformatted, {
             parser: 'babel',
             plugins: [parser],
@@ -38,12 +38,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({onEditorChange, initialValue}) =
     <div className='editor-wrapper'>
         <button className='button button-format is-primary is-small' onClick={onFormatClick}>Format</button>
         <MonacoEditor
-            defaultValue={initialValue}
+            value={initialValue}
             onMount={handleEditorDidMount}
             onChange={handleChange}
             theme='vs-dark' 
             language='javascript' 
-            height="500px" 
+            height="100%" 
             options={{
                 wordWrap: 'on',
                 minimap: {enabled: false},
