@@ -1,39 +1,42 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducers from './reducers';
-import { insertCellBefore } from './reducers/cellsReducer';
+import { insertCellAfter } from './reducers/cellsReducer';
 
-
-
-export const store = configureStore({ reducer: reducers, preloadedState: {}});
+export const store = configureStore({ 
+    reducer: reducers, 
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: {ignoredActionPaths: ['type']},
+      }), 
+    preloadedState: {}});
 
 store.dispatch({
-    type: insertCellBefore,
+    type: insertCellAfter,
     payload:{
         id: null,
         type: 'code'
     }
-})
+});
 
 store.dispatch({
-    type: insertCellBefore,
+    type: insertCellAfter,
     payload:{
         id: null,
         type: 'text'
     }
-})
+});
 
 store.dispatch({
-    type: insertCellBefore,
+    type: insertCellAfter,
     payload:{
         id: null,
         type: 'code'
     }
-})
+});
 
 store.dispatch({
-    type: insertCellBefore,
+    type: insertCellAfter,
     payload:{
         id: null,
         type: 'text'
     }
-})
+});

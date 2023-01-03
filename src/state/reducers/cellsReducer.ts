@@ -26,11 +26,13 @@ interface CellsState {
         const { id, content } = action.payload;
         state.data[id].content = content;
       },
+
       deleteCell: (state, action: PayloadAction<string>) => {
         delete state.data[action.payload];
   
         state.order = state.order.filter((id) => id !== action.payload);
       },
+      
       moveCell: (state, action: PayloadAction<MoveCellAction>) => {
         const { direction } = action.payload;
   
@@ -42,7 +44,7 @@ interface CellsState {
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
       },
-      insertCellBefore: (state, action: PayloadAction<InsertCellAction>) => {
+      insertCellAfter: (state, action: PayloadAction<InsertCellAction>) => {
         const newCell: Cell = {
           content: '',
           type: action.payload.type,
@@ -54,15 +56,15 @@ interface CellsState {
         const index = state.order.findIndex((id) => id === action.payload.id);
   
         if (index < 0) {
-          state.order.push(newCell.id);
+          state.order.unshift(newCell.id);
         } else {
-          state.order.splice(index, 0, newCell.id);
+          state.order.splice(index + 1, 0, newCell.id);
         }
       },
     },
   });
   
-  export const { moveCell, deleteCell, insertCellBefore, updateCell } =
+  export const { moveCell, deleteCell, insertCellAfter, updateCell } =
     cellsSlice.actions;
   
   export default cellsSlice.reducer;
