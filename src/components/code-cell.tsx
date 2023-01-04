@@ -3,9 +3,9 @@ import CodeEditor from './code-editor';
 import Preview from './preview';
 import bundle from '../bundler';
 import Resizable from "./resizable";
-import { Cell } from "../state";
-import { updateCell } from "../state";
-import { useDispatch } from "react-redux";
+import { Cell } from "../state/cell";
+import { useActions } from '../hooks/use-actions';
+import { useTypedSelector } from '../hooks/use-typed-selector';
 
 
 interface codeCellProps {
@@ -13,10 +13,10 @@ interface codeCellProps {
 }
 
 const CodeCell: React.FC<codeCellProps> = ({ cell }) => {
+  const { updateCell } = useActions();
   const [code, setCode] = useState("");
   const [err, setErr] = useState("");
-  const dispatch = useDispatch();
-
+  
   useEffect(() => {
     const timer = setTimeout(async () => {
         const output = await bundle(cell.content);
@@ -36,7 +36,7 @@ const CodeCell: React.FC<codeCellProps> = ({ cell }) => {
             <Resizable direction="horizontal">
                 <CodeEditor
                     initialValue={cell.content}
-                    onEditorChange={(value) => dispatch(updateCell({id: cell.id, content: value}))}
+                    onEditorChange={(value) => updateCell({id: cell.id, content: value})}
                 />
             </Resizable>
         <Preview code={code} potentialError={err} />

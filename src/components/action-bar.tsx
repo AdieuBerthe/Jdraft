@@ -1,27 +1,26 @@
 import './action-bar.css';
-import { moveCell, deleteCell } from "../state";
-import { useDispatch } from "react-redux";
+import { useActions } from '../hooks/use-actions';
 
 interface ActionBarProps {
     id: string
 }
 
 const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
-    const dispatch = useDispatch();
+    const {moveCell, deleteCell} = useActions();
 
     return (
         <div className="action-bar">
-            <button className="button is-primary is-small" onClick={() => dispatch(moveCell({id: id, direction: 'up'}))}>
+            <button className="button is-primary is-small" onClick={() => moveCell({id: id, direction: 'up'})}>
                 <span className="icon">
                     <i className="fas fa-arrow-up"></i>
                 </span>
             </button>
-            <button className="button is-primary is-small" onClick={() => dispatch(moveCell({id: id, direction: 'down'}))}>
+            <button className="button is-primary is-small" onClick={() => moveCell({id: id, direction: 'down'})}>
                 <span className="icon">
                     <i className="fas fa-arrow-down"></i>
                 </span>
             </button>
-            <button className="button is-primary is-small" onClick={() => dispatch(deleteCell(id))}>
+            <button className="button is-primary is-small" onClick={() => deleteCell(id)}>
                 <span className="icon">
                     <i className="fas fa-times"></i>
                 </span>

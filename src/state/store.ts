@@ -1,42 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducers from './reducers';
-import { insertCellAfter } from './reducers/cellsReducer';
+import cellsReducer from './cellsReducer';
+import bundlesReducer from './bundlesReducer';
+import { ActionType } from './action-types';
+import { insertCellAfter } from './cellsReducer';
 
-export const store = configureStore({ 
-    reducer: reducers, 
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        serializableCheck: {ignoredActionPaths: ['type']},
-      }), 
-    preloadedState: {}});
 
-store.dispatch({
-    type: insertCellAfter,
-    payload:{
-        id: null,
-        type: 'code'
-    }
+export const store = configureStore({
+	reducer: {
+		cells: cellsReducer,
+		bundles: bundlesReducer,
+	},
 });
 
-store.dispatch({
-    type: insertCellAfter,
-    payload:{
-        id: null,
-        type: 'text'
-    }
-});
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-store.dispatch({
-    type: insertCellAfter,
-    payload:{
-        id: null,
-        type: 'code'
-    }
-});
+store.dispatch(insertCellAfter({id: null, type: 'code'}));
 
-store.dispatch({
-    type: insertCellAfter,
-    payload:{
-        id: null,
-        type: 'text'
-    }
-});
+store.dispatch(insertCellAfter({id: null, type: 'text'}));
+
+store.dispatch(insertCellAfter({id: null, type: 'code'}));
+
+store.dispatch(insertCellAfter({id: null, type: 'text'}));

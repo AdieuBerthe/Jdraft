@@ -1,5 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Cell, CellTypes, Direction } from '../cell';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Cell } from './cell';
+import {
+  UpdateCellAction,
+  MoveCellAction,
+  InsertCellAfterAction, 
+} from "./action-types";
+import bundler from '../bundler';
+import { bundleComplete, bundleStart } from './bundlesReducer';
 
 
 interface CellsState {
@@ -10,6 +17,32 @@ interface CellsState {
       [key: string]: Cell;
     };
   }
+
+  interface CreateBundleArgs {
+    cellId: string;
+    input: string;
+  }
+
+  export const createBundle = createAsyncThunk(
+    'cells/createBundle',
+    async ({ cellId, input }: CreateBundleArgs, { dispatch }) => {
+      dispatch(
+        bundleStart({
+          cellId,
+        })
+      );
+  
+      const result = await bundler(input);
+  
+      dispatch(
+        bundleComplete({
+          cellId,
+          bundle: result,
+        })
+      );
+    }
+  );
+  
 
   const initialState = {
     loading: false,
@@ -44,7 +77,8 @@ interface CellsState {
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
       },
-      insertCellAfter: (state, action: PayloadAction<InsertCellAction>) => {
+      insertCellAfter: (state, action: PayloadAction<InsertCellAfterAction>) => {
+        console.log('action.payload.payload.type')
         const newCell: Cell = {
           content: '',
           type: action.payload.type,
@@ -66,6 +100,8 @@ interface CellsState {
   
   export const { moveCell, deleteCell, insertCellAfter, updateCell } =
     cellsSlice.actions;
+
+  export const cellsActions = cellsSlice.actions;
   
   export default cellsSlice.reducer;
   
@@ -73,20 +109,3 @@ interface CellsState {
     return Math.random().toString(36).substring(2, 5);
   };
 
-  interface MoveCellAction {
-    id: string;
-    direction: Direction;
-  }
-  
-  interface InsertCellAction {
-    id: string | null;
-    type: CellTypes;
-  }
-  
-  interface UpdateCellAction {
-    id: string;
-    content: string;
-  }
-  
-
-  
