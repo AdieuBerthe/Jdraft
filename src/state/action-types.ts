@@ -48,6 +48,8 @@ export type Action =
   | MoveCellAction
   | DeleteCellAction
   | InsertCellAfterAction
-  | UpdateCellAction
+  | UpdateCellAction;
+
+  export type BundleAction =
   | BundleStartAction
   | BundleCompleteAction;

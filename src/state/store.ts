@@ -1,9 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import cellsReducer from './cellsReducer';
 import bundlesReducer from './bundlesReducer';
-import { ActionType } from './action-types';
 import { insertCellAfter } from './cellsReducer';
-
 
 export const store = configureStore({
 	reducer: {

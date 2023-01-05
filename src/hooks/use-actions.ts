@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useTypedDispatch } from './use-typed-selector';
 import { bindActionCreators } from '@reduxjs/toolkit';
-import { cellsActions } from '../state/cellsReducer';
+import  {cellsActions} from '../state/cellsReducer';
 
 export const useActions = () => {
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
   return useMemo(() => {
-    return bindActionCreators(cellsActions, dispatch);
+     return bindActionCreators(cellsActions, dispatch);
   }, [dispatch]);
 };
+

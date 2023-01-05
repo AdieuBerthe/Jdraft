@@ -1,12 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Cell } from './cell';
 import {
   UpdateCellAction,
   MoveCellAction,
-  InsertCellAfterAction, 
+  InsertCellAfterAction,
 } from "./action-types";
-import bundler from '../bundler';
-import { bundleComplete, bundleStart } from './bundlesReducer';
 
 
 interface CellsState {
@@ -18,31 +16,6 @@ interface CellsState {
     };
   }
 
-  interface CreateBundleArgs {
-    cellId: string;
-    input: string;
-  }
-
-  export const createBundle = createAsyncThunk(
-    'cells/createBundle',
-    async ({ cellId, input }: CreateBundleArgs, { dispatch }) => {
-      dispatch(
-        bundleStart({
-          cellId,
-        })
-      );
-  
-      const result = await bundler(input);
-  
-      dispatch(
-        bundleComplete({
-          cellId,
-          bundle: result,
-        })
-      );
-    }
-  );
-  
 
   const initialState = {
     loading: false,
@@ -57,7 +30,7 @@ interface CellsState {
     reducers: {
       updateCell: (state, action: PayloadAction<UpdateCellAction>) => {
         const { id, content } = action.payload;
-        state.data[id].content = content;
+        state.data[id].content = content;        
       },
 
       deleteCell: (state, action: PayloadAction<string>) => {
@@ -78,7 +51,6 @@ interface CellsState {
         state.order[targetIndex] = action.payload.id;
       },
       insertCellAfter: (state, action: PayloadAction<InsertCellAfterAction>) => {
-        console.log('action.payload.payload.type')
         const newCell: Cell = {
           content: '',
           type: action.payload.type,

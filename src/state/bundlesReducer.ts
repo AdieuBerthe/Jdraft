@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BundleStartAction, BundleCompleteAction } from './action-types';
+import { createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import bundler from '../bundler';
+import { BundleStartAction, BundleCompleteAction, } from './action-types';
 
 interface BundlesState {
 	[key: string]:
@@ -11,13 +12,18 @@ interface BundlesState {
 		| undefined;
 }
 
+interface CreateBundleArgs {
+	cellId: string;
+	input: string
+}
+
 const initialState: BundlesState = {};
 
 const bundleSlice = createSlice({
 	name: 'bundle',
 	initialState,
 	reducers: {
-		bundleStart: (state, action: PayloadAction<BundleStartAction>) => {
+		bundleStart: (state, action: PayloadAction<BundleStartAction>) => {			
 			state[action.payload.cellId] = {
 				loading: true,
 				code: '',
@@ -31,9 +37,32 @@ const bundleSlice = createSlice({
 				err: action.payload.bundle.err,
 			};
 		},
+
 	},
 });
 
-export const { bundleStart, bundleComplete } = bundleSlice.actions;
+ export const createBundle: any = createAsyncThunk(
+	'bundles/createBundle',
+	async ({cellId, input}: CreateBundleArgs, {dispatch}) => {
+
+		
+			dispatch(bundleStart({
+				cellId,
+			}))
+		;
+
+		const result = await bundler(input);
+	
+			dispatch(bundleComplete({
+				cellId,
+				bundle: result,
+			}))
+		;
+	  }
+ )
+
+export const { bundleStart, bundleComplete, } = bundleSlice.actions;
+
+export const bundlesActions = bundleSlice.actions;
 
 export default bundleSlice.reducer;
