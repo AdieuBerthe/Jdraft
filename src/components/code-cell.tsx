@@ -8,34 +8,32 @@ import { useActions } from "../hooks/use-actions";
 import { useTypedSelector } from '../hooks/use-typed-selector';
 import { createBundle } from "../state/bundlesReducer";
 import { useDispatch } from "react-redux";
-
-
+import { useCumulativeCode } from '../hooks/use-cumulative-code';
 
 interface codeCellProps {
   cell: Cell,
 }
 
 const CodeCell: React.FC<codeCellProps> = ({ cell }) => {
-  
- 
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const { updateCell } = useActions();
   const dispatch = useDispatch();
+  const cumulativeCode = useCumulativeCode(cell.id)
   
   useEffect(() => {
     if (!bundle) {
-      dispatch(createBundle({cellId: cell.id, input: cell.content}));
+      dispatch(createBundle({cellId: cell.id, input: cumulativeCode}));
       return
     }
     const timer = setTimeout(async () => {
-      dispatch(createBundle({cellId: cell.id, input: cell.content}));
+      dispatch(createBundle({cellId: cell.id, input: cumulativeCode}));
      }, 1000);
 
     return () => {
         clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.content, cell.id]);
+  }, [cumulativeCode, cell.id]);
 
 
   return (
