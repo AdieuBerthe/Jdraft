@@ -9,6 +9,7 @@ import { useTypedSelector } from '../../hooks/use-typed-selector';
 import { createBundle } from "../../state/bundlesReducer";
 import { useDispatch } from "react-redux";
 import { useCumulativeCode } from '../../hooks/use-cumulative-code';
+import { ActionType } from '../../state/action-types';
 
 interface codeCellProps {
   cell: Cell,
@@ -42,7 +43,7 @@ const CodeCell: React.FC<codeCellProps> = ({ cell }) => {
             <Resizable direction="horizontal">
                 <CodeEditor
                     initialValue={cell.content}
-                    onEditorChange={(value) => updateCell({id: cell.id, content: value})}
+                    onEditorChange={(value) => updateCell({type: ActionType.UPDATE_CELL, id: cell.id, content: value})}
                 />
             </Resizable>
             <div className='progress-wrapper'>

@@ -1,10 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { Cell } from './cell';
 import {
   UpdateCellAction,
   MoveCellAction,
   InsertCellAfterAction,
+  FetchCellsAction,
+  FetchCellsCompleteAction,
+  FetchCellsErrorAction,
+  SaveCellsErrorAction,
+  DeleteCellAction,
+  ActionType
 } from "./action-types";
+import axios from 'axios';
+import { RootState } from './store';
 
 
 interface CellsState {
@@ -33,10 +41,10 @@ interface CellsState {
         state.data[id].content = content;        
       },
 
-      deleteCell: (state, action: PayloadAction<string>) => {
-        delete state.data[action.payload];
+      deleteCell: (state, action: PayloadAction<DeleteCellAction>) => {
+        delete state.data[action.payload.id];
   
-        state.order = state.order.filter((id) => id !== action.payload);
+        state.order = state.order.filter((id) => id !== action.payload.id);
       },
       
       moveCell: (state, action: PayloadAction<MoveCellAction>) => {
@@ -53,8 +61,8 @@ interface CellsState {
       insertCellAfter: (state, action: PayloadAction<InsertCellAfterAction>) => {
         const newCell: Cell = {
           content: '',
-          type: action.payload.type,
-          id: randomId(),
+          type: action.payload.cellType,
+          id: nanoid(),
         };
   
         state.data[newCell.id] = newCell;
@@ -67,17 +75,59 @@ interface CellsState {
           state.order.splice(index + 1, 0, newCell.id);
         }
       },
+      loadCells: (state, action: PayloadAction<FetchCellsAction>) => {
+        state.loading = true;
+        state.error = null;
+      },
+      fetchCellsComplete: (state, action: PayloadAction<FetchCellsCompleteAction>) => {
+        state.order = action.payload.data.map(cell => cell.id);
+        state.data = action.payload.data.reduce((acc, cell) => {
+          acc[cell.id] = cell;
+          return acc;
+        }, {} as CellsState['data']);
+      },
+      fetchCellsError: (state, action: PayloadAction<FetchCellsErrorAction>) => {
+        state.loading = false;
+        state.error = action.payload.data;
+      },
+      saveCellsError: (state, action: PayloadAction<SaveCellsErrorAction>) => {
+        state.error = action.payload.payload;
+      },
     },
   });
+
+  export const fetchCells: any = createAsyncThunk(
+    'cells/fetchCells',
+    async (_, {dispatch}) => {
   
-  export const { moveCell, deleteCell, insertCellAfter, updateCell } =
+        dispatch(loadCells({type: ActionType.FETCH_CELLS}));
+
+        try {
+          const { data }: { data: Cell[]} = await axios.get('/cells');
+          dispatch(fetchCellsComplete({type: ActionType.FETCH_CELLS_COMPLETE, data}));
+        } catch (err: any) {
+          dispatch(fetchCellsError({type: ActionType.FETCH_CELLS_ERROR, data: err.message}));
+        }
+      }
+   )
+
+   export const saveCells: any = createAsyncThunk<void, void, { state: RootState }>(
+    'cells/saveCells',
+    async (_, {dispatch, getState}) => {
+      const { cells: {data, order} } = getState();
+      const cells = order.map(id => data[id]);
+      try {
+        await axios.post('/cells', { cells });
+        console.log('saved');
+      } catch (err: any) {
+        dispatch(saveCellsError({type: ActionType.SAVE_CELLS_ERROR,payload: err.message}))
+      }
+    }
+   )
+  
+  export const { moveCell, deleteCell, insertCellAfter, updateCell, loadCells, fetchCellsComplete, fetchCellsError, saveCellsError } =
     cellsSlice.actions;
 
   export const cellsActions = cellsSlice.actions;
   
   export default cellsSlice.reducer;
-  
-  const randomId = () => {
-    return Math.random().toString(36).substring(2, 5);
-  };
-

@@ -1,22 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cellsReducer from './cellsReducer';
+import cellsReducer, { saveCells } from './cellsReducer';
 import bundlesReducer from './bundlesReducer';
-import { insertCellAfter } from './cellsReducer';
+import { persistMiddleware } from './middlewares/persist-mw';
+import thunk from 'redux-thunk';
 
 export const store = configureStore({
 	reducer: {
 		cells: cellsReducer,
 		bundles: bundlesReducer,
-	},
+	}, middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(persistMiddleware.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-store.dispatch(insertCellAfter({id: null, type: 'code'}));
-
-store.dispatch(insertCellAfter({id: null, type: 'text'}));
-
-store.dispatch(insertCellAfter({id: null, type: 'code'}));
-
-store.dispatch(insertCellAfter({id: null, type: 'text'}));
