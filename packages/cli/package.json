@@ -1,20 +1,30 @@
 {
-  "name": "cli",
+  "name": "jdraft",
   "version": "1.0.0",
   "description": "",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": "dist/index.js",
   "scripts": {
     "start": "tsc --watch --preserveWatchOutput",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "esbuild src/index.ts --platform=node --outfile=dist/index.js --bundle --minify --define:process.env.NODE_ENV=\\\"production\\\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "^9.5.0",
-    "local-api": "^1.0.0"
+    "@jdraft/local-client": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "esbuild": "0.8.26",
+    "@jdraft/local-api": "^1.0.0",
+    "commander": "^9.5.0",
     "typescript": "^4.9.4"
   }
 }

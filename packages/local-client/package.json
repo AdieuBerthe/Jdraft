@@ -1,8 +1,13 @@
 {
-  "name": "local-client",
+  "name": "@jdraft/local-client",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build"
+  ],
+  "devDependencies": {
     "@babel/parser": "^7.20.7",
     "@babel/traverse": "^7.20.12",
     "@fortawesome/fontawesome-free": "^6.2.1",
@@ -21,6 +26,7 @@
     "@types/react-resizable": "^3.0.3",
     "@uiw/react-md-editor": "^3.19.8",
     "axios": "^1.2.1",
+    "buffer": "^6.0.3",
     "bulmaswatch": "^0.8.1",
     "esbuild-wasm": "0.8.27",
     "immer": "^9.0.16",
@@ -43,7 +49,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepublishOnly": "npm run build"
   },
   "eslintConfig": {
     "extends": [
@@ -62,8 +69,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "buffer": "^6.0.3"
   }
+
 }
