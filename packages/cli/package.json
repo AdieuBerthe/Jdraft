@@ -1,6 +1,6 @@
 {
   "name": "jdraft",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -18,13 +18,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@jdraft/local-client": "^1.0.0"
+    "@jdraft/local-client": "^1.0.1"
   },
   "devDependencies": {
+    "@jdraft/local-api": "^1.0.1",
     "@types/node": "^18.11.18",
-    "esbuild": "0.8.26",
-    "@jdraft/local-api": "^1.0.0",
     "commander": "^9.5.0",
+    "esbuild": "0.8.26",
     "typescript": "^4.9.4"
   }
 }

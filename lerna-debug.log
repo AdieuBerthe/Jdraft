@@ -1,0 +1,14 @@
+15 error Error: Command failed: git remote update
+15 error remote: Not Found
+15 error fatal: repository 'https://github.com/AdieuBerthe/Jbook/0a3a2524c496a7de8677a640e57cc8857a0e5882/' not found
+15 error error: Could not fetch main
+15 error
+15 error Fetching origin
+15 error Fetching main
+15 error
+15 error     at makeError (/home/antoine/.nvm/versions/node/v14.20.0/lib/node_modules/lerna/node_modules/execa/index.js:174:9)
+15 error     at Function.module.exports.sync (/home/antoine/.nvm/versions/node/v14.20.0/lib/node_modules/lerna/node_modules/execa/index.js:338:15)
+15 error     at Object.execSync (/home/antoine/.nvm/versions/node/v14.20.0/lib/node_modules/lerna/node_modules/@lerna/child-process/index.js:26:16)
+15 error     at updateRemote (/home/antoine/.nvm/versions/node/v14.20.0/lib/node_modules/lerna/node_modules/@lerna/version/lib/is-behind-upstream.js:26:16)
+15 error     at isBehindUpstream (/home/antoine/.nvm/versions/node/v14.20.0/lib/node_modules/lerna/node_modules/@lerna/version/lib/is-behind-upstream.js:11:3)
+15 error     at VersionCommand.initialize (/home/antoine/.nvm/versions/node/v14.20.0/lib/node_modules/lerna/node_modules/@lerna/version/index.js:154:9)
