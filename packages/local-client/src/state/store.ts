@@ -1,8 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cellsReducer, { saveCells } from './cellsReducer';
+import cellsReducer from './cellsReducer';
 import bundlesReducer from './bundlesReducer';
 import { persistMiddleware } from './middlewares/persist-mw';
-import thunk from 'redux-thunk';
 
 export const store = configureStore({
 	reducer: {

@@ -1,5 +1,4 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import { TimerOptions } from "timers";
 import { saveCells } from "../cellsReducer";
 import  { moveCell, updateCell, deleteCell, insertCellAfter } from "../cellsReducer";
    
